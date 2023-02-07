@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- website_name %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Josefin+Sans:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=PT+Sans+Narrow:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,700,1,0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    />
+    <style>
+      * {
+        font-family: "Josefin Sans", sans-serif;
+        list-style: none;
+        text-decoration: none;
+        outline: none !important;
+        color: #fff;
+        overflow-wrap: anywhere;
+      }
+      body {
+        height: 100vh;
+        background: radial-gradient(
+          ellipse at bottom,
+          #1b2735 0%,
+          #090a0f 100%
+        );
+      }
+      code {
+        font-family: "Ubuntu mono", "Courier prime";
+        color: #bbbbbb;
+      }
+      h2 {
+        font-family: "Ubuntu Condenced", "PT Sans Narrow", "Oswald", sans-serif;
+        font-size: 1.7rem;
+      }
+      h3 {
+        font-family: "Ubuntu Condenced", "PT Sans Narrow", "Oswald", sans-serif;
+      }
+      .container {
+        margin: 0vh 1vw;
+        margin-bottom: 1vh;
+        padding: 2vh 3vw;
+        display: list-item;
+        flex-direction: column;
+        border: 2px solid rgba(255, 255, 255, 0.11);
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.11);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 0 80px rgba(0, 0, 0, 0.25);
+        align-items: center;
+        overflow: auto;
+      }
+      .container.center {
+        text-align: center;
+      }
+      .container.start {
+        text-align: start;
+      }
+      .container.heading {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        font-size: 1.5rem;
+        font-family: "Ubuntu Condensed", "PT Sans Narrow", "Oswald", sans-serif;
+      }
+      .rfontsize {
+        font-size: 1rem;
+      }
+      .forhover:hover {
+        filter: invert(0.3);
+      }
+      .dlinks {
+        margin-top: 2.5vh;
+        display: inline-block;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .snowflake {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: linear-gradient(white, white);
+        /* Workaround for Chromium's selective color inversion */
+        border-radius: 50%;
+        filter: drop-shadow(0 0 10px white);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="snow" count="200"></div>
+    <span class="container center rfontsize"
+      ><h2>Nothing Here, Send data through /api route.</h2></span
+    >
+    <script type="application/javascript">
+      let snowflakesCount = 200; // Snowflake count, can be overwritten by attrs
+      let baseCss = ``;
+
+      // set global attributes
+      if (typeof SNOWFLAKES_COUNT !== "undefined") {
+        snowflakesCount = SNOWFLAKES_COUNT;
+      }
+      if (typeof BASE_CSS !== "undefined") {
+        baseCss = BASE_CSS;
+      }
+
+      let bodyHeightPx = null;
+      let pageHeightVh = null;
+
+      function setHeightVariables() {
+        bodyHeightPx = document.body.offsetHeight;
+        pageHeightVh = (100 * bodyHeightPx) / window.innerHeight;
+      }
+
+      // get params set in snow div
+      function getSnowAttributes() {
+        const snowWrapper = document.getElementById("snow");
+        if (snowWrapper) {
+          snowflakesCount = Number(
+            snowWrapper.attributes?.count?.value || snowflakesCount
+          );
+        }
+      }
+
+      // This function allows you to turn on and off the snow
+      function showSnow(value) {
+        if (value) {
+          document.getElementById("snow").style.display = "block";
+        } else {
+          document.getElementById("snow").style.display = "none";
+        }
+      }
+
+      // Creating snowflakes
+      function spawnSnow(snowDensity = 200) {
+        snowDensity -= 1;
+
+        for (let i = 0; i < snowDensity; i++) {
+          let board = document.createElement("div");
+          board.className = "snowflake";
+
+          document.getElementById("snow").appendChild(board);
+        }
+      }
+
+      // Append style for each snowflake to the head
+      function addCss(rule) {
+        let css = document.createElement("style");
+        css.appendChild(document.createTextNode(rule)); // Support for the rest
+        document.getElementsByTagName("head")[0].appendChild(css);
+      }
+
+      // Math
+      function randomInt(value = 100) {
+        return Math.floor(Math.random() * value) + 1;
+      }
+
+      function randomIntRange(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      // Create style for snowflake
+      function spawnSnowCSS(snowDensity = 200) {
+        let snowflakeName = "snowflake";
+        let rule = baseCss;
+
+        for (let i = 1; i < snowDensity; i++) {
+          let randomX = Math.random() * 100; // vw
+          let randomOffset = Math.random() * 10; // vw;
+          let randomXEnd = randomX + randomOffset;
+          let randomXEndYoyo = randomX + randomOffset / 2;
+          let randomYoyoTime = getRandomArbitrary(0.3, 0.8);
+          let randomYoyoY = randomYoyoTime * pageHeightVh; // vh
+          let randomScale = Math.random();
+          let fallDuration = randomIntRange(10, (pageHeightVh / 10) * 3); // s
+          let fallDelay = randomInt((pageHeightVh / 10) * 3) * -1; // s
+          let opacity = Math.random();
+
+          rule += `
+      .${snowflakeName}:nth-child(${i}) {
+        opacity: ${opacity};
+        transform: translate(${randomX}vw, -10px) scale(${randomScale});
+        animation: fall-${i} ${fallDuration}s ${fallDelay}s linear infinite;
+      }
+      @keyframes fall-${i} {
+        ${randomYoyoTime * 100}% {
+          transform: translate(${randomXEnd}vw, ${randomYoyoY}vh) scale(${randomScale});
+        }
+        to {
+          transform: translate(${randomXEndYoyo}vw, ${pageHeightVh}vh) scale(${randomScale});
+        }
+      }
+    `;
+        }
+        addCss(rule);
+      }
+
+      // Load the rules and execute after the DOM loads
+      createSnow = function () {
+        setHeightVariables();
+        getSnowAttributes();
+        spawnSnowCSS(snowflakesCount);
+        spawnSnow(snowflakesCount);
+      };
+
+      window.onload = createSnow;
+    </script>
+  </body>
+</html>
