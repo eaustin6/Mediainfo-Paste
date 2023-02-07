@@ -36,13 +36,7 @@
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     />
-    <script>
-      function setThemeClass() {
-        document.documentElement.className = Telegram.WebApp.colorScheme;
-      }
-      Telegram.WebApp.onEvent("themeChanged", setThemeClass);
-      setThemeClass();
-    </script>
+  
     <style>
       * {
         font-family: "Josefin Sans", sans-serif;
@@ -55,9 +49,8 @@
 
       body {
         background-color: #000000;
-        background: url(https://te.legra.ph/file/b043903bdffecaaa258dd.jpg)
+        backgrounds: url(https://te.legra.ph/file/b043903bdffecaaa258dd.jpg)
           center / cover no-repeat fixed;
-        background-size: cover;
       }
 
       code {
@@ -101,47 +94,6 @@
         font-size: 0.9rem;
       }
     </style>
-  </head>
-  <body>
-    <%- data.content %>
-    <script type="application/javascript">
-      Telegram.WebApp.ready();
-
-      const initData = Telegram.WebApp.initData || "";
-      const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
-
-      Telegram.WebApp.MainButton.setText("CLOSE WEBVIEW")
-        .show()
-        .onClick(function () {
-          webviewClose();
-        });
-
-      Telegram.WebApp.onEvent("themeChanged", function () {
-        document.querySelector("#themeData").innerHTML = JSON.stringify(
-          Telegram.WebApp.themeParams,
-          null,
-          2
-        );
-      });
-
-      function toggleMainButton(el) {
-        const mainButton = Telegram.WebApp.MainButton;
-        if (mainButton.isVisible) {
-          mainButton.hide();
-          el.innerHTML = "Show Main Button";
-        } else {
-          mainButton.show();
-          el.innerHTML = "Hide Main Button";
-        }
-      }
-
-      function webviewExpand() {
-        Telegram.WebApp.expand();
-      }
-
-      function webviewClose() {
-        Telegram.WebApp.close();
-      }
-    </script>
-  </body>
+  </head>  
+   
 </html>
